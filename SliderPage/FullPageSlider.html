@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Full Page Slider</title>
+        <meta content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.0/css/all.min.css">
+    </head>
+    
+    <body>
+        <div class="slider">
+            <div class="slider-container">
+                <div
+                    class="slide active"
+                    style="background-image: url('https://images.unsplash.com/photo-1431444393712-19267bd26144?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1191&q=80');"
+                >
+                    <div class="info">
+                        <h1>Nature View</h1>
+                        <p>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                            Voluptatum.
+                        </p>
+                    </div>
+                </div>
+                <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1486016006115-74a41448aea2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1047&q=80');">
+                    <div class="info">
+                        <h1>Rain View</h1>
+                        <p>
+                            Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                            Amet, vero earum perspiciatis officia
+                        </p>
+                    </div>
+                </div>
+                <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1551244072-5d12893278ab?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1189&q=80');">
+                    <div class="info">
+                        <h1>Ocean View</h1>
+                        <p>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                            Incidunt recusandae unde autem
+                        </p>
+                    </div>
+                </div>
+                <!-- The rest of the slides -->
+            </div>
+            <div class="eraser"></div>
+            <div class="buttons-container">
+                <button id="previous"><i class="fa fa-arrow-left"></i></button>
+                <button id="next"><i class="fa fa-arrow-right"></i></button>
+            </div>
+        </div>
+        
+        <h4>Weekly Coding Challenge #2 - Slider</h4>
+        
+        <footer>
+            <p>
+                Created with <i class="fa fa-heart"></i> by
+                <a target="_blank" href="https://florin-pop.com">Florin Pop</a>
+                - Read how I created this and how you can join the challenge
+                <a target="_blank" href="https://florin-pop.com/blog/2019/04/buttons-ui-kit">here</a>
+            </p>
+        </footer>
+    </body>
+    <script>
+        const slides = document.querySelectorAll('.slider-container .slide'); // get all the slides
+        const eraser = document.querySelector('.eraser'); // the eraser
+        const prev = document.getElementById('previous'); // previous button
+        const next = document.getElementById('next'); // next button
+        const intervalTime = 5000; // time until nextSlide triggers in miliseconds
+        const eraserActiveTime = 700; // time to wait until the .eraser goes all the way
+        let sliderInterval; // variable used to save the setInterval and clear it when needed
+
+        const nextSlide = () => {
+            // Step 1.
+            eraser.classList.add('active');
+
+            // Step 2.
+            setTimeout(() => {
+                // Step 3.
+                const active = document.querySelector('.slide.active');
+                active.classList.toggle('active');
+
+                // Step 4.
+                if (active.nextElementSibling) {
+                    active.nextElementSibling.classList.toggle('active');
+                } else {
+                    // Step 5.
+                    slides[0].classList.toggle('active');
+                }
+
+                // Step 6.
+                setTimeout(() => {
+                    eraser.classList.remove('active');
+                }, 200);
+            }, eraserActiveTime);
+        };
+
+        const prevSlide = () => {
+            eraser.classList.add('active');
+            setTimeout(() => {
+                const active = document.querySelector('.slide.active');
+                active.classList.toggle('active');
+
+                // The *changed* part from the nextSlide code
+                if (active.previousElementSibling) {
+                    active.previousElementSibling.classList.toggle('active');
+                } else {
+                    slides[slides.length - 1].classList.toggle('active');
+                }
+                // End of the changed part
+
+                setTimeout(() => {
+                    eraser.classList.remove('active');
+                }, 200);
+            }, eraserActiveTime);
+        };
+
+        sliderInterval = setInterval(nextSlide, intervalTime);
+
+        next.addEventListener('click', () => {
+            nextSlide();
+            clearInterval(sliderInterval);
+            sliderInterval = setInterval(nextSlide, intervalTime);
+        });
+
+        prev.addEventListener('click', () => {
+            prevSlide();
+            clearInterval(sliderInterval);
+            sliderInterval = setInterval(nextSlide, intervalTime);
+        });
+    </script>
+</html>
